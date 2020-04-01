@@ -37,7 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_cleanup',# siver para eliminar las imaganes o archivos que no se usan
+    'corsheaders',# permite el trafico entre plataformas
+    'rest_framework',# es un framerok que sirve para desarollar APIS
+    'django_filters',# es un complemento para django res_framework, para manejar mejor los filtros
+    'storages',# es un complemento para poder subir los archivos directo a AWS S3
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True # permitimos el trafico desde cualquier plataforma
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,6 +56,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #son middlewares o funciones intermediarias.
+
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'BAPTecnologia.urls'
@@ -77,10 +92,10 @@ WSGI_APPLICATION = 'BAPTecnologia.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bapTecnologia',
+        'NAME': 'BAP',
         'USER': 'postgres',
-        'PASSWORD': 'david1981',
-        'HOST': 'localhost',
+        'PASSWORD': 'fll2019',
+        'HOST': '34.70.2.34',
         'PORT': '5432',
     }
 }
@@ -111,9 +126,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-mx'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Guayaquil' # configuramos la hora del servidor
 
 USE_I18N = True
 
@@ -125,4 +140,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+
+'''
+AWS_ACCESS_KEY_ID = 'ID'
+AWS_SECRET_ACCESS_KEY = 'SECRETE_KEY'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_REGION_NAME = 'us-east-1'
+AWS_STORAGE_BUCKET_NAME = 'bucket_name'
+AWS_DEFAULT_ACL = None
+'''
