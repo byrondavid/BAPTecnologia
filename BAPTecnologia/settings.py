@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'core',
     'django_cleanup',# siver para eliminar las imaganes o archivos que no se usan
     'corsheaders',# permite el trafico entre plataformas
     'rest_framework',# es un framerok que sirve para desarollar APIS
