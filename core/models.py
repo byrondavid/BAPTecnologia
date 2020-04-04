@@ -5,8 +5,9 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.deconstruct import deconstructible
 
-
 # Create your models here.
+from BAPTecnologia.settings import MEDIA_URL
+
 
 @deconstructible
 class PathAndRename(object):
@@ -17,19 +18,29 @@ class PathAndRename(object):
     def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
         filename = '{}.{}'.format(uuid4().hex, ext)
-        return os.path.join(self.path, filename)
+        print('PATH: ', self.path)
+        return os.path.join(MEDIA_URL, filename)
 
 
 path_and_rename = PathAndRename("/fotos")
 
 
 class Foto(models.Model):
+    titulo = models.CharField(max_length=120)
+    descripcion = models.TextField(null=True, blank=True)
     foto = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
     fecha_registro = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.titulo
 
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=60, unique=True)
+    ver_en_web = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
 
 
 class Producto(models.Model):
@@ -46,7 +57,11 @@ class Producto(models.Model):
 class Servicio(models.Model):
     titulo = models.CharField(max_length=120)
     descripcion = models.TextField()
+    fotos = models.ManyToManyField(Foto)
     precio = models.DecimalField(decimal_places=2, max_digits=7)
+    descuento = models.PositiveSmallIntegerField(null=True)
+    ver_descuento = models.BooleanField(default=True)
+    ver_en_web = models.BooleanField(default=True)
 
 
 class Cliente(models.Model):
@@ -60,7 +75,6 @@ class Cliente(models.Model):
     telefono = models.CharField(max_length=30)
     direccion = models.TextField(null=True)
 
-    fotos = models.ManyToManyField(Foto)
     servicios = models.ManyToManyField(Servicio, through='ServiciosCliente')
 
 
@@ -75,7 +89,7 @@ class Seguimiento(models.Model):
 class ServiciosCliente(models.Model):
     porcentaje_total = models.PositiveSmallIntegerField(default=0)
 
-    equipo = JSONField(null=True)
+    equipo = JSONField(null=True,)
 
     observaciones = models.TextField(null=True)
     estado = models.CharField(max_length=30)
