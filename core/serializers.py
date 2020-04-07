@@ -45,5 +45,3 @@ class ServiciosClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiciosCliente
         fields = ALL_FIELDS
-
-

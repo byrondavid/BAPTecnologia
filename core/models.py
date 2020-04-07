@@ -50,21 +50,24 @@ class Producto(models.Model):
     descuento = models.PositiveSmallIntegerField(null=True)
     ver_descuento = models.BooleanField(default=True)
     ver_en_web = models.BooleanField(default=True)
+
     fotos = models.ManyToManyField(Foto)
+
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "" + self.nombre + "|" + self.categoria.nombre
+        return "" + self.nombre + " | " + self.categoria.nombre
 
 
 class Servicio(models.Model):
     titulo = models.CharField(max_length=120)
-    descripcion = models.TextField()
-    fotos = models.ManyToManyField(Foto)
+    descripcion = models.TextField(null=True)
     precio = models.DecimalField(decimal_places=2, max_digits=7)
     descuento = models.PositiveSmallIntegerField(null=True)
     ver_descuento = models.BooleanField(default=True)
     ver_en_web = models.BooleanField(default=True)
+
+    fotos = models.ManyToManyField(Foto)
 
     def __str__(self):
         return self.titulo
@@ -97,8 +100,6 @@ class Seguimiento(models.Model):
 
 class ServiciosCliente(models.Model):
     porcentaje_total = models.PositiveSmallIntegerField(default=0)
-
-    equipo = JSONField(null=True, )
 
     observaciones = models.TextField(null=True)
     estado = models.CharField(max_length=30)

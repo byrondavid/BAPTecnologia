@@ -13,9 +13,6 @@ class CategoriaAdmin(admin.ModelAdmin):
     ordering = ['nombre']
     list_filter = ['ver_en_web']
 
-    class Meta:
-        abstract = True
-
 
 @admin.register(Foto)
 class FotoAdmin(admin.ModelAdmin):
@@ -30,8 +27,8 @@ class ProductoAdmin(admin.ModelAdmin):
         'id', 'nombre', 'nombre', 'descripcion', 'descuento',
         'categoria__nombre', 'fotos__titulo'
     ]
-    # filter_horizontal = ['fotos']
-    raw_id_fields = ['fotos']
+    filter_horizontal = ['fotos']
+    raw_id_fields = ['categoria']
     ordering = ['nombre', 'categoria__nombre']
     list_filter = ['ver_en_web', 'ver_descuento']
 
@@ -47,6 +44,6 @@ class ServicioAdmin(admin.ModelAdmin):
 @admin.register(ServiciosCliente)
 class ServiciosCliente(admin.ModelAdmin):
     list_display = [
-        'porcentaje_total', 'equipo', 'estado', 'servicio', 'cliente'
+        'porcentaje_total', 'estado', 'servicio', 'cliente'
     ]
     raw_id_fields = ['servicio']
