@@ -48,15 +48,12 @@ class Producto(models.Model):
 
 
 class FotoProducto(models.Model):
-    titulo = models.CharField(max_length=120, null=True, blank=True)
-    descripcion = models.TextField(null=True, blank=True)
     fecha_registro = models.DateTimeField(auto_now_add=True)
-    ver_en_web = models.BooleanField(default=True)
     foto = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.titulo + " | PRODUCTO: " + self.producto.nombre
+        return "| PRODUCTO: " + self.producto.nombre
 
 
 class Servicio(models.Model):
@@ -72,15 +69,12 @@ class Servicio(models.Model):
 
 
 class FotoServicio(models.Model):
-    titulo = models.CharField(max_length=120, null=True, blank=True)
-    descripcion = models.TextField(null=True, blank=True)
     fecha_registro = models.DateTimeField(auto_now_add=True)
-    ver_en_web = models.BooleanField(default=True)
     foto = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.titulo + " | SERVICIO: " + self.servicio.titulo
+        return "| SERVICIO: " + self.servicio.titulo
 
 
 class Cliente(models.Model):
@@ -120,12 +114,9 @@ class Seguimiento(models.Model):
 
 
 class FotoSeguimiento(models.Model):
-    titulo = models.CharField(max_length=120, null=True, blank=True)
-    descripcion = models.TextField(null=True, blank=True)
     fecha_registro = models.DateTimeField(auto_now_add=True)
-    ver_en_web = models.BooleanField(default=True)
     foto = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
     seguimiento = models.ForeignKey(Seguimiento, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.titulo + " | Seguimiento: " + self.seguimiento.titulo
+        return "| Seguimiento: " + self.seguimiento.titulo
