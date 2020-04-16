@@ -25,16 +25,6 @@ class PathAndRename(object):
 path_and_rename = PathAndRename("/fotos")
 
 
-class Foto(models.Model):
-    titulo = models.CharField(max_length=120)
-    descripcion = models.TextField(null=True, blank=True)
-    foto = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
-    fecha_registro = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.titulo
-
-
 class Categoria(models.Model):
     nombre = models.CharField(max_length=60, unique=True)
     ver_en_web = models.BooleanField(default=True)
@@ -51,12 +41,22 @@ class Producto(models.Model):
     ver_descuento = models.BooleanField(default=True)
     ver_en_web = models.BooleanField(default=True)
 
-    fotos = models.ManyToManyField(Foto)
-
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
 
     def __str__(self):
         return "" + self.nombre + " | " + self.categoria.nombre
+
+
+class FotoProducto(models.Model):
+    titulo = models.CharField(max_length=120, null=True, blank=True)
+    descripcion = models.TextField(null=True, blank=True)
+    fecha_registro = models.DateTimeField(auto_now_add=True)
+    ver_en_web = models.BooleanField(default=True)
+    foto = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.titulo + " | PRODUCTO: " + self.producto.nombre
 
 
 class Servicio(models.Model):
@@ -67,10 +67,20 @@ class Servicio(models.Model):
     ver_descuento = models.BooleanField(default=True)
     ver_en_web = models.BooleanField(default=True)
 
-    fotos = models.ManyToManyField(Foto)
-
     def __str__(self):
         return self.titulo
+
+
+class FotoServicio(models.Model):
+    titulo = models.CharField(max_length=120, null=True, blank=True)
+    descripcion = models.TextField(null=True, blank=True)
+    fecha_registro = models.DateTimeField(auto_now_add=True)
+    ver_en_web = models.BooleanField(default=True)
+    foto = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
+    servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.titulo + " | SERVICIO: " + self.servicio.titulo
 
 
 class Cliente(models.Model):
@@ -87,17 +97,6 @@ class Cliente(models.Model):
     servicios = models.ManyToManyField(Servicio, through='ServiciosCliente')
 
 
-class Seguimiento(models.Model):
-    titulo = models.CharField(max_length=120)
-    descripcion = models.TextField(null=True)
-    porcentaje = models.PositiveSmallIntegerField(default=0)
-
-    fotos = models.ManyToManyField(Foto)
-
-    def __str__(self):
-        return self.titulo
-
-
 class ServiciosCliente(models.Model):
     porcentaje_total = models.PositiveSmallIntegerField(default=0)
 
@@ -107,4 +106,26 @@ class ServiciosCliente(models.Model):
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
-    seguimientos = models.ManyToManyField(Seguimiento)
+
+class Seguimiento(models.Model):
+    titulo = models.CharField(max_length=120)
+    descripcion = models.TextField(null=True)
+    porcentaje = models.PositiveSmallIntegerField(default=0)
+
+    servicio_cliente = models.ForeignKey(ServiciosCliente,
+                                         on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.titulo
+
+
+class FotoSeguimiento(models.Model):
+    titulo = models.CharField(max_length=120, null=True, blank=True)
+    descripcion = models.TextField(null=True, blank=True)
+    fecha_registro = models.DateTimeField(auto_now_add=True)
+    ver_en_web = models.BooleanField(default=True)
+    foto = models.ImageField(blank=True, null=True, upload_to=path_and_rename)
+    seguimiento = models.ForeignKey(Seguimiento, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.titulo + " | Seguimiento: " + self.seguimiento.titulo
