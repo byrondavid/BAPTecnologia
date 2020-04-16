@@ -65,6 +65,7 @@ class ServicioAdmin(admin.ModelAdmin):
     list_display = ['titulo', 'descripcion', 'precio']
     search_fields = ['titulo', 'descripcion', 'precio']
     ordering = ['titulo', 'precio']
+    inlines = (FotoServicioInline,)
 
 
 @admin.register(Cliente)
