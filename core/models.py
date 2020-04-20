@@ -1,28 +1,23 @@
 import os
 from uuid import uuid4
 
-from django.contrib.postgres.fields import JSONField
 from django.db import models
-from django.utils.deconstruct import deconstructible
+
+
+def path_and_rename(instance, filename):
+    upload_to = 'fotos'
+    ext = filename.split('.')[-1]
+    # get filename
+    if instance.pk:
+        filename = '{}.{}'.format(f'{instance.pk}{uuid4().hex}{instance.pk}', ext)
+    else:
+        # set filename as random string
+        filename = '{}.{}'.format(uuid4().hex, ext)
+    # return the whole path to the file
+    return os.path.join(upload_to, filename)
+
 
 # Create your models here.
-from BAPTecnologia.settings import MEDIA_URL
-
-
-@deconstructible
-class PathAndRename(object):
-
-    def __init__(self, sub_path):
-        self.path = sub_path
-
-    def __call__(self, instance, filename):
-        ext = filename.split('.')[-1]
-        filename = '{}.{}'.format(uuid4().hex, ext)
-        print('PATH: ', self.path)
-        return os.path.join(MEDIA_URL, filename)
-
-
-path_and_rename = PathAndRename("/fotos")
 
 
 class Categoria(models.Model):
