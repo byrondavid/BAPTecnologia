@@ -70,6 +70,8 @@ class SeguimientoSerializer(serializers.ModelSerializer):
 
 
 class ServiciosClienteSerializer(serializers.ModelSerializer):
+    servicio = ServicioSerializer()
+    cliente = ClienteSerializer()
     class Meta:
         model = ServiciosCliente
         fields = ALL_FIELDS

@@ -24,3 +24,8 @@ class ServicioViewSet(ModelViewSet):
 class ClienteViewSet(ModelViewSet):
     queryset = models.Cliente.objects.all()
     serializer_class = serializers.ClienteSerializer
+
+
+class ServiciosClienteViewSet(ModelViewSet):
+    queryset = models.ServiciosCliente.objects.all()
+    serializer_class = serializers.ServiciosClienteSerializer
