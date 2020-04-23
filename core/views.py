@@ -29,3 +29,7 @@ class ClienteViewSet(ModelViewSet):
 class ServiciosClienteViewSet(ModelViewSet):
     queryset = models.ServiciosCliente.objects.all()
     serializer_class = serializers.ServiciosClienteSerializer
+
+class FotosServicioViewSet(ModelViewSet):
+    queryset = models.FotoServicio.objects.all()
+    serializer_class = serializers.FotoServicioSerializer
